@@ -26,11 +26,17 @@ export class UserService {
 
         const foundLogin = userList.find(
             x =>
-                x.userName === login.userLogin &&
+                x.userLogin === login.userLogin &&
                 x.userPassword === login.userPassword
         )
-        if(foundLogin){
+        if (foundLogin) {
             return foundLogin;
         }
+    }
+    deleteUser(id: number) {
+        return this.userRepository.dell(id);
+    }
+    changeUserService(user: UserViewModel){
+        return this.userRepository.change(user);
     }
 }
