@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { UserViewModel } from 'src/domain/user.viewmodel';
 
 @Injectable()
@@ -23,8 +23,17 @@ export class UserRepository {
         return this.db.splice(id, id);
     }
     change(user: UserViewModel) {
-        return this.db.filter(x => x.userLogin === user.userLogin).map(x => {
-            return { ...x, userName: user.userName, userPassword: user.userPassword }
-        })
+
+        const idUser = this.db.findIndex(x => x.userLogin === user.userLogin);
+
+        if (idUser == -1 || idUser === undefined || idUser === null) {
+            throw new BadRequestException('Invalid user');
+        } else {
+            this.db[idUser].userName = user.userName;
+            this.db[idUser].userPassword = user.userPassword;
+
+            return this.db[idUser];
+        }
+
     }
 }

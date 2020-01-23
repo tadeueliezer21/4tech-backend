@@ -8,13 +8,13 @@ export class UserController {
 
     constructor(private userService: UserService) { }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Get()
     retornarUsuarios() {
         return this.userService.usersReturn();
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    // @UseGuards(AuthGuard('jwt'))
     @Post()
     criarUsuarios(@Body() newUser: UserViewModel) {
         return this.userService.createNewUser(newUser);

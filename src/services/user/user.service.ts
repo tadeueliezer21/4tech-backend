@@ -36,7 +36,7 @@ export class UserService {
     deleteUser(id: number) {
         return this.userRepository.dell(id);
     }
-    changeUserService(user: UserViewModel){
+    changeUserService(user: UserViewModel) {
         return this.userRepository.change(user);
     }
 }

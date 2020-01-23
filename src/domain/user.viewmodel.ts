@@ -10,14 +10,14 @@ export class UserViewModel {
 
 
     @IsNotEmpty()
-    @Length(3,10)
+    @Length(3, 10)
     readonly userLogin: string;
-    
+
     @IsNotEmpty()
-    @Length(3,10)
-    readonly userName: string;
-    
+    @Length(3, 10)
+    userName: string;
+
     @IsNotEmpty()
-    @Length(3,10)
-    readonly userPassword: string;
+    @Length(3, 10)
+    userPassword: string;
 }
