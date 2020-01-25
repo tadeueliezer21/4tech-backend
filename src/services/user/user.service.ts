@@ -11,24 +11,25 @@ export class UserService {
     usersReturn() {
         return this.userRepository.getUsers();
     }
-    createNewUser(newUser: UserViewModel) {
-        const userList = this.userRepository.getUsers();
+    async createNewUser(newUser: UserViewModel) {
+        const userList = await this.userRepository.getUsers();
 
-        const existingUser = userList.find(x => x.userName === newUser.userName);
+        const existingUser = userList.find(x => x.userName === newUser.userName || x.userLogin === newUser.userLogin);
         if (existingUser) {
             throw new BadRequestException('This username alread exists');
         }
         return this.userRepository.createUser(newUser);
     }
 
-    attemptLogin(login: LoginViewModel) {
-        const userList = this.userRepository.getUsers();
+    async attemptLogin(login: LoginViewModel) {
+        const userList = await this.userRepository.getUsers();
 
         const foundLogin = userList.find(
             x =>
                 x.userLogin === login.userLogin &&
                 x.userPassword === login.userPassword
         )
+        
         if (foundLogin) {
             return foundLogin;
         }
@@ -39,4 +40,7 @@ export class UserService {
     changeUserService(user: UserViewModel) {
         return this.userRepository.change(user);
     }
+    // addUserList(list: UserViewModel[]){
+    //     return list;
+    // }
 }

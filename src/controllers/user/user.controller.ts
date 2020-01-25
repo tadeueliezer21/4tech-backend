@@ -3,18 +3,17 @@ import { UserService } from 'src/services/user/user.service';
 import { UserViewModel } from 'src/domain/user.viewmodel';
 import { AuthGuard } from '@nestjs/passport';
 
+// @UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UserController {
 
     constructor(private userService: UserService) { }
 
-    // @UseGuards(AuthGuard('jwt'))
     @Get()
     retornarUsuarios() {
         return this.userService.usersReturn();
     }
 
-    // @UseGuards(AuthGuard('jwt'))
     @Post()
     criarUsuarios(@Body() newUser: UserViewModel) {
         return this.userService.createNewUser(newUser);
@@ -29,4 +28,10 @@ export class UserController {
     changeUser(@Body() user: UserViewModel) {
         return this.userService.changeUserService(user);
     }
+    
+    // @Post('userlist')
+    // addUserlList(list: UserViewModel[]){
+    //     return list;
+    // }
+
 }

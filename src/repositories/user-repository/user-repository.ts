@@ -1,39 +1,42 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { UserViewModel } from 'src/domain/user.viewmodel';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from 'src/domain/schemas/user.schema';
 
 @Injectable()
 export class UserRepository {
+    constructor(@InjectModel('User') private readonly userCollection: Model<User>) {
 
-    db: UserViewModel[] = [
-        new UserViewModel('cadastro0', 'cadastro0', 'senha0'),
-        new UserViewModel('cadastro1', 'cadastro1', 'senha1'),
-        new UserViewModel('cadastro2', 'cadastro2', 'senha2'),
-        new UserViewModel('cadastro3', 'cadastro3', 'senha3')
-    ];
-
-    getUsers() {
-        return this.db;
+    }
+    async getUsers(): Promise<User[]> {
+        return await this.userCollection
+            .find()
+            .lean();
     }
 
-    createUser(newUser: UserViewModel) {
-        this.db.push(newUser);
-        return 'User successfully added!';
+    async createUser(newUser: UserViewModel) {
+        const user = this.userCollection(newUser);
+        return await user.save();
     }
     dell(id: number) {
-        return this.db.splice(id, id);
+        return
     }
     change(user: UserViewModel) {
 
-        const idUser = this.db.findIndex(x => x.userLogin === user.userLogin);
+        // const idUser = this.db.findIndex(x => x.userLogin === user.userLogin);
 
-        if (idUser == -1 || idUser === undefined || idUser === null) {
-            throw new BadRequestException('Invalid user');
-        } else {
-            this.db[idUser].userName = user.userName;
-            this.db[idUser].userPassword = user.userPassword;
+        // if (idUser == -1 || idUser === undefined || idUser === null) {
+        //     throw new BadRequestException('Invalid user');
+        // } else {
+        //     this.db[idUser].userName = user.userName;
+        //     this.db[idUser].userPassword = user.userPassword;
 
-            return this.db[idUser];
-        }
-
+        //     return this.db[idUser];
+        // }
+        return
     }
+    // addUserList(list: UserViewModel[]) {
+    //     return list;
+    // }
 }

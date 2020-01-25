@@ -10,14 +10,16 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    userLogin(login: LoginViewModel) {
-        const user = this.userService.attemptLogin(login);
+    async userLogin(login: LoginViewModel) {
+        const user = await this.userService.attemptLogin(login);
+
         if (!user) {
             throw new BadRequestException('Incorrect Credentials');
         }
-        
+
         return {
-            access_token: this.jwtService.sign({ status: 'Authorized' })
+            access_token: this.jwtService.sign({ status: 'Authorized' }),
+            userId: user._id,
         };
     }
 }
