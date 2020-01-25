@@ -9,9 +9,29 @@ export class UserRepository {
     constructor(@InjectModel('User') private readonly userCollection: Model<User>) {
 
     }
+
+    async getById(userId: string): Promise<User> {
+        try {
+            return await this.userCollection
+                .findOne({ _id: userId })
+                .lean();
+        } catch (e) {
+            throw new BadRequestException('Invalid user');
+        }
+    }
+
+    async getByCredentials(userLoginFromViewModel: string, passwordLoginFromViewModel: string) {
+        return await this.userCollection
+            .findOne({
+                userLogin: userLoginFromViewModel,
+                userPassword: passwordLoginFromViewModel,
+            })
+    }
+
     async getUsers(): Promise<User[]> {
         return await this.userCollection
             .find()
+            .select({ __v: false, userPassword: false })
             .lean();
     }
 
