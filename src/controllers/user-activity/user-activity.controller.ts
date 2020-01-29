@@ -12,7 +12,7 @@ export class UserActivityController {
     constructor(private readonly userActitivyService: UserActivityService) { }
 
     @Get(':index')
-    getRecentImage(@Param('index') index: string) {
+    async getRecentImage(@Param('index') index: string) {
         return this.userActitivyService.getRecentUploads(index);
     }
 

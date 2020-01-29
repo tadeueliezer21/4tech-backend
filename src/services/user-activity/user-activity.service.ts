@@ -25,7 +25,7 @@ export class UserActivityService {
         }
 
         const recentUploads = await this.userActivityRepository.getPaged(indexAsNumber);
-
+        
         return this.convertImagesBase64(recentUploads);
     }
 
@@ -58,7 +58,7 @@ export class UserActivityService {
         return Promise.all(
             userActivities.map(userActivity => {
                 return {
-                    ...userActivities,
+                    ...userActivity,
                     imgEncoded: readFileSync('../images/' + userActivity.fileName, 'base64'),
                 }
             })
